@@ -25,4 +25,10 @@ struct StringCalculatorKataTests {
         #expect(try! calculator.add("5") == 5, "Input '5' should return 5.")
         #expect(try! calculator.add("9") == 9, "Input '9' should return 9.")
     }
+    
+    @Test func test_add_twoNumbersCommaSeparated_returnsSum() {
+        #expect(try! calculator.add("1,2") == 3, "Input '1,2' should return 3.")
+        #expect(try! calculator.add("9,23") == 5, "Input '9,23' should return 32.")
+        #expect(try! calculator.add("12,45") == 57, "Input '12,45' should return 57.")
+    }
 }
