@@ -13,12 +13,21 @@ class StringCalculator {
             return 0
         }
         
-        // Use CharacterSet for multiple delimiters (comma and newline)
-        let delimiters = CharacterSet(charactersIn: ",\n")
+        var currentDelimiters = CharacterSet(charactersIn: ",\n")
+        var numbersToParse = numbers
         
-        // Generalize splitting and summing for any number of inputs
-        let components = numbers.components(separatedBy: delimiters)                                  .filter {!$0.isEmpty } // Remove empty strings from splitting
-
+        // Check for custom delimiter format: //(delimiter)\n
+        if numbers.hasPrefix("//") {
+            // Regex to capture custom character delimiter
+            if let match = numbers.firstMatch(of: #/\/\/(.)\n(.*)/#) {
+                let customDelimiter = String(match.1)
+                currentDelimiters.insert(charactersIn: customDelimiter)
+                numbersToParse = String(match.2)
+            }
+        }
+        
+        let components = numbersToParse.components(separatedBy: currentDelimiters).filter {!$0.isEmpty }
+        
         let sum = components.reduce(0) { (currentSum, component) in
             return currentSum + (Int(component) ?? 0)
         }
