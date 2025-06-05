@@ -16,6 +16,8 @@ struct StringCalculatorKataTests {
         calculator = StringCalculator()
     }
     
-    // No tests yet, will add in next steps
+    @Test func test_add_emptyString_returnsZero() {
+        #expect(calculator.add("") == 0)
+    }
 
 }
