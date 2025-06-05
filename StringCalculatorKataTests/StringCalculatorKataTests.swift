@@ -9,9 +9,13 @@ import Testing
 @testable import StringCalculatorKata
 
 struct StringCalculatorKataTests {
-
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    var calculator: StringCalculator
+    
+    init() {
+        // Initialize a fresh calculator instance before all tests in this struct
+        calculator = StringCalculator()
     }
+    
+    // No tests yet, will add in next steps
 
 }
