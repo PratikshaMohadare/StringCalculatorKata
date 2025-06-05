@@ -40,4 +40,9 @@ struct StringCalculatorKataTests {
         #expect(try! calculator.add("15,22,45,79") == 161, "Input '15,22,45,79' should return 161.")
         #expect(try! calculator.add("2") == 2, "Input '2' should return 2 (regression test).")
     }
+
+    @Test func test_add_newlinesAsDelimiters_returnsSum() {
+        #expect(try! calculator.add("1\n2,3") == 6, "Input '1\\n2,3' should return 6.")
+        #expect(try! calculator.add("1\n2") == 3, "Input '1\\n2' should return 3.")
+    }
 }
