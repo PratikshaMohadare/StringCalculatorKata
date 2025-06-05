@@ -17,14 +17,10 @@ class StringCalculator {
         
         let components = numbersToParse.components(separatedBy: delimiters).filter {!$0.isEmpty }
         
-        var negativeNumbers: [Int] = []
         let parsedNumbers = components.compactMap { Int($0) }
         
-        for number in parsedNumbers {
-            if number < 0 {
-                negativeNumbers.append(number)
-            }
-        }
+        // Refactor: Use filter to collect negative numbers
+        let negativeNumbers = parsedNumbers.filter { $0 < 0 }
         
         if !negativeNumbers.isEmpty {
             throw CalculatorError.negativesNotAllowed(numbers: negativeNumbers)
