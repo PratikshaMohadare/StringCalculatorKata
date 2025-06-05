@@ -12,6 +12,8 @@ class StringCalculator {
         if numbers.isEmpty {
             return 0
         }
-        return 0 // Simplest change to make the test pass
+        
+        // Convert the string to an integer. If conversion fails, default to 0.
+        return Int(numbers) ?? 0
     }
 }
