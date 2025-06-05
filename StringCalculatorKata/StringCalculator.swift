@@ -13,24 +13,34 @@ class StringCalculator {
             return 0
         }
         
-        var currentDelimiters = CharacterSet(charactersIn: ",\n")
-        var numbersToParse = numbers
+        let (delimiters, numbersToParse) = extractDelimiterAndNumbers(from: numbers)
         
-        // Check for custom delimiter format: //(delimiter)\n
-        if numbers.hasPrefix("//") {
-            // Regex to capture custom character delimiter
-            if let match = numbers.firstMatch(of: #/\/\/(.)\n(.*)/#) {
-                let customDelimiter = String(match.1)
-                currentDelimiters.insert(charactersIn: customDelimiter)
-                numbersToParse = String(match.2)
-            }
-        }
-        
-        let components = numbersToParse.components(separatedBy: currentDelimiters).filter {!$0.isEmpty }
+        let components = numbersToParse.components(separatedBy: delimiters).filter {!$0.isEmpty }
         
         let sum = components.reduce(0) { (currentSum, component) in
             return currentSum + (Int(component) ?? 0)
         }
         return sum
+    }
+    
+    // Refactored helper function
+    private func extractDelimiterAndNumbers(from input: String) -> (delimiter: CharacterSet, numbers: String) {
+        var defaultDelimiters = CharacterSet(charactersIn: ",\n")
+        
+        if input.hasPrefix("//") {
+            let regex = #/\/\/(?:(.)|\[(.*?)\])\n(.*)/#
+            
+            if let match = input.firstMatch(of: regex) {
+                if let singleCharDelimiter = match.output.1 {
+                    defaultDelimiters.insert(charactersIn: String(singleCharDelimiter))
+                } else if let multiCharDelimiter = match.output.2 {
+                    defaultDelimiters.insert(charactersIn: String(multiCharDelimiter))
+                }
+                let numbersPart = String(match.output.3)
+                return (defaultDelimiters, numbersPart)
+            }
+        }
+        
+        return (defaultDelimiters, input)
     }
 }
