@@ -61,4 +61,14 @@ struct StringCalculatorKataTests {
             try self.calculator.add("-5")
         })
     }
+    
+    @Test func test_add_multipleNegativeNumbers_throwsExceptionWithAllNegatives() {
+        #expect(throws: CalculatorError.negativesNotAllowed(numbers: [-2, -4, -6]), performing: {
+            try self.calculator.add("1,-2,3,-4,5,-6")
+        })
+        
+        #expect(throws: CalculatorError.negativesNotAllowed(numbers: [-10, -20]), performing: {
+            try self.calculator.add("-10,-20")
+        })
+    }
 }
