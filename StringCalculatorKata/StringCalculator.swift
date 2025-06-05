@@ -44,3 +44,22 @@ class StringCalculator {
         return (defaultDelimiters, input)
     }
 }
+
+enum CalculatorError: Error, CustomStringConvertible, Equatable {
+    case negativesNotAllowed(numbers: [Int])
+
+    var description: String {
+        switch self {
+        case.negativesNotAllowed(let numbers):
+            let negativeList = numbers.map { String($0) }.joined(separator: ", ")
+            return "negatives not allowed: \(negativeList)"
+        }
+    }
+
+    static func == (lhs: CalculatorError, rhs: CalculatorError) -> Bool {
+        switch (lhs, rhs) {
+        case (.negativesNotAllowed(let lhsNumbers),.negativesNotAllowed(let rhsNumbers)):
+            return lhsNumbers == rhsNumbers
+        }
+    }
+}

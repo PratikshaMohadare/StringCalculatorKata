@@ -51,4 +51,14 @@ struct StringCalculatorKataTests {
         #expect(try! calculator.add("//-\n1-2") == 3, "Input '//-\\n1-2' should return 3.")
         #expect(try! calculator.add("//#\n1#2#3") == 6, "Input '//#\\n1#2#3' should return 6.")
     }
+    
+    @Test func test_add_negativeNumber_throwsException() {
+        #expect(throws: CalculatorError.negativesNotAllowed(numbers: [-1]), performing: {
+            try self.calculator.add("1,4,-1")
+        })
+        
+        #expect(throws: CalculatorError.negativesNotAllowed(numbers: [-5]), performing: {
+            try self.calculator.add("-5")
+        })
+    }
 }
