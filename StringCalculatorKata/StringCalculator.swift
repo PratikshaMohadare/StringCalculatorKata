@@ -17,9 +17,20 @@ class StringCalculator {
         
         let components = numbersToParse.components(separatedBy: delimiters).filter {!$0.isEmpty }
         
-        let sum = components.reduce(0) { (currentSum, component) in
-            return currentSum + (Int(component) ?? 0)
+        var negativeNumbers: [Int] = []
+        let parsedNumbers = components.compactMap { Int($0) }
+        
+        for number in parsedNumbers {
+            if number < 0 {
+                negativeNumbers.append(number)
+            }
         }
+        
+        if !negativeNumbers.isEmpty {
+            throw CalculatorError.negativesNotAllowed(numbers: negativeNumbers)
+        }
+        
+        let sum = parsedNumbers.reduce(0, +)
         return sum
     }
     
