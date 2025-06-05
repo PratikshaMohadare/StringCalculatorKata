@@ -13,8 +13,11 @@ class StringCalculator {
             return 0
         }
         
+        // Use CharacterSet for multiple delimiters (comma and newline)
+        let delimiters = CharacterSet(charactersIn: ",\n")
+        
         // Generalize splitting and summing for any number of inputs
-        let components = numbers.split(separator: ",")
+        let components = numbers.components(separatedBy: delimiters)
         let sum = components.reduce(0) { (currentSum, component) in
             return currentSum + (Int(component) ?? 0)
         }
