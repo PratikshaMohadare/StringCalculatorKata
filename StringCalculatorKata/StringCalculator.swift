@@ -12,6 +12,6 @@ class StringCalculator {
         if numbers.isEmpty {
             return 0
         }
-        return 0 // Simplest change to make the test pass 
+        return 0 // Simplest change to make the test pass
     }
 }
