@@ -45,4 +45,10 @@ struct StringCalculatorKataTests {
         #expect(try! calculator.add("1\n2,3") == 6, "Input '1\\n2,3' should return 6.")
         #expect(try! calculator.add("1\n2") == 3, "Input '1\\n2' should return 3.")
     }
+    
+    @Test func test_add_customDelimiters_returnsSum() {
+        #expect(try! calculator.add("//;\n2;5") == 7, "Input '//;\\n2;5' should return 7.")
+        #expect(try! calculator.add("//-\n1-2") == 3, "Input '//-\\n1-2' should return 3.")
+        #expect(try! calculator.add("//#\n1#2#3") == 6, "Input '//#\\n1#2#3' should return 6.")
+    }
 }
