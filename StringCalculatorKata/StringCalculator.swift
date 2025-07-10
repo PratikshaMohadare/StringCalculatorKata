@@ -16,7 +16,7 @@ class StringCalculator {
         // IMP: When parsing textfield input, treat \\n as \n
         let numberString = numbers.replacingOccurrences(of: "\\n", with: "\n")
 
-        let (delimiters, numbersToParse) = extractDelimiterAndNumbers(from: numberString)
+        let (delimiters, numbersToParse, shouldMultiply) = extractDelimiterAndNumbers(from: numberString)
         
         let components = numbersToParse.components(separatedBy: delimiters)
                                      .filter {!$0.isEmpty } // Remove empty strings that result from splitting
@@ -34,27 +34,34 @@ class StringCalculator {
         // So, all parsed numbers are included in the sum.
         let numbersToSum = parsedNumbers
         
-        let sum = numbersToSum.reduce(0, +)
-        return sum
+        if shouldMultiply {
+            return numbersToSum.reduce(1, *)
+        } else {
+            return numbersToSum.reduce(0, +)
+        }
     }
     
     // Refactored helper function
-    private func extractDelimiterAndNumbers(from input: String) -> (delimiter: CharacterSet, numbers: String) {
+    private func extractDelimiterAndNumbers(from input: String) -> (delimiter: CharacterSet, numbers: String, shouldMultiply: Bool) {
         var defaultDelimiters = CharacterSet(charactersIn: ",\n")
-        
+        var shouldMultiply = false
+
         // Check for custom delimiter format: //(single_char_delimiter)\n
         if input.hasPrefix("//") {
             let regex = #/\/\/(.)\n(.*)/#
             
             if let match = input.firstMatch(of: regex) {
                 let customDelimiter = String(match.output.1) // The captured single character delimiter
+                if customDelimiter == "*" {
+                    shouldMultiply = true
+                }
                 defaultDelimiters.insert(charactersIn: customDelimiter)
                 let numbersPart = String(match.output.2) // The rest of the string after the custom delimiter line
-                return (defaultDelimiters, numbersPart)
+                return (defaultDelimiters, numbersPart, shouldMultiply)
             }
         }
         
-        return (defaultDelimiters, input)
+        return (defaultDelimiters, input, shouldMultiply)
     }
 }
 
